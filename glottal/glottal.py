@@ -16,7 +16,7 @@ except:
 
 PATH=os.path.dirname(os.path.abspath(__file__))
 sys.path.append('../')
-from utils import dynamic2static, save_dict_kaldimat, get_dict
+from ..utils import dynamic2static, save_dict_kaldimat, get_dict
 from scipy.integrate import cumtrapz
 from tqdm import tqdm
 import pandas as pd
@@ -260,7 +260,7 @@ class Glottal:
                 stopf0=stopf0+stepf0
                 rmwin.append(l)
                 continue
-                
+
 
             startf0=startf0+stepf0
             stopf0=stopf0+stepf0
@@ -291,7 +291,7 @@ class Glottal:
             varH1H2t=np.delete(varH1H2t,rmwin)
             avgHRFt=np.delete(avgHRFt,rmwin)
             varHRFt=np.delete(varHRFt,rmwin)
-        
+
         feat=np.stack((varGCIt, avgNAQt, varNAQt, avgQOQt, varQOQt, avgH1H2t, varH1H2t, avgHRFt, varHRFt), axis=1)
 
         if fmt in("npy","txt"):
@@ -309,7 +309,7 @@ class Glottal:
                         head_st.append(k+" "+h)
                 for e, k in enumerate(head_st):
                     df[k]=[feat_st[e]]
-                            
+
                 return pd.DataFrame(df)
             else:
                 df={}
@@ -333,7 +333,7 @@ class Glottal:
 
     def extract_features_path(self, path_audio, static=True, plots=False, fmt="npy", kaldi_file=""):
         """Extract the glottal features for audios inside a path
-        
+
         :param path_audio: directory with (.wav) audio files inside, sampled at 16 kHz
         :param static: whether to compute and return statistic functionals over the feature matrix, or return the feature matrix computed over frames
         :param plots: timeshift to extract the features
@@ -364,7 +364,7 @@ class Glottal:
                 ids.append(hf[j])
             else:
                 ids.append(np.repeat(hf[j], feat.shape[0]))
-        
+
         Features=np.vstack(Features)
         ids=np.hstack(ids)
         if fmt in("npy","txt"):
