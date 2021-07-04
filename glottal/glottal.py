@@ -1,4 +1,3 @@
-
 from scipy.io.wavfile import read
 import os
 import sys
@@ -14,15 +13,12 @@ except:
     from peakdetect import peakdetect
     from GCI import SE_VQ_varF0, IAIF, get_vq_params
 
-PATH=os.path.dirname(os.path.abspath(__file__))
-sys.path.append('../')
 from ..utils import dynamic2static, save_dict_kaldimat, get_dict
 from scipy.integrate import cumtrapz
 from tqdm import tqdm
 import pandas as pd
 import torch
-from script_mananger import script_manager
-
+from ..script_mananger import script_manager
 
 class Glottal:
     """
