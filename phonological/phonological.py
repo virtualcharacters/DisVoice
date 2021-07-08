@@ -28,7 +28,7 @@ class Phonological:
     """
     Compute phonological features from continuous speech files.
 
-    18 descriptors are computed, bases on 18 different phonological classes from the phonet toolkit 
+    18 descriptors are computed, bases on 18 different phonological classes from the phonet toolkit
     https://phonet.readthedocs.io/en/latest/?badge=latest
 
     It computes the phonological log-likelihood ratio features from phonet
@@ -75,6 +75,7 @@ class Phonological:
             for l in self.statistics:
                 self.head_st.append(j+"_"+l)
         self.phon=Phonet(["all"])
+        self.phon.size_frame = 1/30
 
     def extract_features_file(self, audio, static=True, plots=False, fmt="npy", kaldi_file=""):
         """Extract the phonological features from an audio file
@@ -102,7 +103,7 @@ class Phonological:
 
         """
 
-        
+
         df=self.phon.get_PLLR(audio, plot_flag=plots)
 
         keys=df.keys().tolist()
@@ -156,7 +157,7 @@ class Phonological:
 
     def extract_features_path(self, path_audio, static=True, plots=False, fmt="npy", kaldi_file=""):
         """Extract the phonological features for audios inside a path
-        
+
         :param path_audio: directory with (.wav) audio files inside, sampled at 16 kHz
         :param static: whether to compute and return statistic functionals over the feature matrix, or return the feature matrix computed over frames
         :param plots: timeshift to extract the features
@@ -188,7 +189,7 @@ class Phonological:
                 ids.append(hf[j])
             else:
                 ids.append(np.repeat(hf[j], feat.shape[0]))
-        
+
         Features=np.vstack(Features)
         ids=np.hstack(ids)
         if fmt in("npy","txt"):
