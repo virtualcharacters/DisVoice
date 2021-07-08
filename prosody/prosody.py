@@ -22,11 +22,10 @@ except:
 import pandas as pd
 import torch
 from tqdm import tqdm
-path_app = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(path_app+'/../')
-import praat.praat_functions as praat_functions
-from script_mananger import script_manager
-from utils import save_dict_kaldimat, get_dict
+
+from ..praat import praat_functions as praat_functions
+from ..script_mananger import script_manager
+from ..utils import save_dict_kaldimat, get_dict
 
 
 class Prosody:
@@ -129,29 +128,29 @@ class Prosody:
         self.PATH = os.path.dirname(os.path.abspath(__file__))
         self.voice_bias=-0.2
         self.P=5
-        self.namefeatf0=["F0avg", "F0std", "F0max", "F0min", 
-            "F0skew", "F0kurt", "F0tiltavg", "F0mseavg", 
-            "F0tiltstd", "F0msestd", "F0tiltmax", "F0msemax", 
-            "F0tiltmin", "F0msemin","F0tiltskw", "F0mseskw", 
-            "F0tiltku", "F0mseku", "1F0mean", "1F0std", 
-            "1F0max", "1F0min", "1F0skw", "1F0ku", "lastF0avg", 
+        self.namefeatf0=["F0avg", "F0std", "F0max", "F0min",
+            "F0skew", "F0kurt", "F0tiltavg", "F0mseavg",
+            "F0tiltstd", "F0msestd", "F0tiltmax", "F0msemax",
+            "F0tiltmin", "F0msemin","F0tiltskw", "F0mseskw",
+            "F0tiltku", "F0mseku", "1F0mean", "1F0std",
+            "1F0max", "1F0min", "1F0skw", "1F0ku", "lastF0avg",
             "lastF0std", "lastF0max", "lastF0min", "lastF0skw", "lastF0ku"]
-        self.namefeatEv=["avgEvoiced", "stdEvoiced", "skwEvoiced", "kurtosisEvoiced", 
-            "avgtiltEvoiced", "stdtiltEvoiced", "skwtiltEvoiced", "kurtosistiltEvoiced", 
-            "avgmseEvoiced", "stdmseEvoiced", "skwmseEvoiced", "kurtosismseEvoiced", 
-            "avg1Evoiced", "std1Evoiced", "max1Evoiced", "min1Evoiced", "skw1Evoiced", 
-            "kurtosis1Evoiced", "avglastEvoiced", "stdlastEvoiced", "maxlastEvoiced", 
-            "minlastEvoiced", "skwlastEvoiced",  "kurtosislastEvoiced"]    
-        self.namefeatEu=["avgEunvoiced", "stdEunvoiced", "skwEunvoiced", "kurtosisEunvoiced", 
-            "avgtiltEunvoiced", "stdtiltEunvoiced", "skwtiltEunvoiced", "kurtosistiltEunvoiced", 
-            "avgmseEunvoiced", "stdmseEunvoiced", "skwmseEunvoiced", "kurtosismseEunvoiced", 
-            "avg1Eunvoiced", "std1Eunvoiced", "max1Eunvoiced", "min1Eunvoiced", "skw1Eunvoiced", 
-            "kurtosis1Eunvoiced", "avglastEunvoiced", "stdlastEunvoiced", "maxlastEunvoiced", 
-            "minlastEunvoiced", "skwlastEunvoiced",  "kurtosislastEunvoiced"]  
+        self.namefeatEv=["avgEvoiced", "stdEvoiced", "skwEvoiced", "kurtosisEvoiced",
+            "avgtiltEvoiced", "stdtiltEvoiced", "skwtiltEvoiced", "kurtosistiltEvoiced",
+            "avgmseEvoiced", "stdmseEvoiced", "skwmseEvoiced", "kurtosismseEvoiced",
+            "avg1Evoiced", "std1Evoiced", "max1Evoiced", "min1Evoiced", "skw1Evoiced",
+            "kurtosis1Evoiced", "avglastEvoiced", "stdlastEvoiced", "maxlastEvoiced",
+            "minlastEvoiced", "skwlastEvoiced",  "kurtosislastEvoiced"]
+        self.namefeatEu=["avgEunvoiced", "stdEunvoiced", "skwEunvoiced", "kurtosisEunvoiced",
+            "avgtiltEunvoiced", "stdtiltEunvoiced", "skwtiltEunvoiced", "kurtosistiltEunvoiced",
+            "avgmseEunvoiced", "stdmseEunvoiced", "skwmseEunvoiced", "kurtosismseEunvoiced",
+            "avg1Eunvoiced", "std1Eunvoiced", "max1Eunvoiced", "min1Eunvoiced", "skw1Eunvoiced",
+            "kurtosis1Eunvoiced", "avglastEunvoiced", "stdlastEunvoiced", "maxlastEunvoiced",
+            "minlastEunvoiced", "skwlastEunvoiced",  "kurtosislastEunvoiced"]
 
-        self.namefeatdur=["Vrate", "avgdurvoiced", "stddurvoiced", "skwdurvoiced", "kurtosisdurvoiced", "maxdurvoiced", "mindurvoiced", 
-            "avgdurunvoiced", "stddurunvoiced", "skwdurunvoiced", "kurtosisdurunvoiced", "maxdurunvoiced", "mindurunvoiced", 
-            "avgdurpause", "stddurpause", "skwdurpause", "kurtosisdurpause", "maxdurpause", "mindurpause", 
+        self.namefeatdur=["Vrate", "avgdurvoiced", "stddurvoiced", "skwdurvoiced", "kurtosisdurvoiced", "maxdurvoiced", "mindurvoiced",
+            "avgdurunvoiced", "stddurunvoiced", "skwdurunvoiced", "kurtosisdurunvoiced", "maxdurunvoiced", "mindurunvoiced",
+            "avgdurpause", "stddurpause", "skwdurpause", "kurtosisdurpause", "maxdurpause", "mindurpause",
             "PVU", "PU", "UVU", "VVU", "VP", "UP"]
         self.head_st=self.namefeatf0+self.namefeatEv+self.namefeatEu+self.namefeatdur
 
@@ -341,7 +340,7 @@ class Prosody:
             self.plot_pros(data_audio,fs,F0,segmentsV, segmentsU, F0_features)
 
         features=np.hstack((F0_features, energy_featuresV, energy_featuresU, duration_features))
-        
+
         return features
 
 
@@ -475,7 +474,7 @@ class Prosody:
                 ids.append(hf[j])
             else:
                 ids.append(np.repeat(hf[j], feat.shape[0]))
-        
+
         Features=np.vstack(Features)
         ids=np.hstack(ids)
         if fmt in("npy","txt"):
